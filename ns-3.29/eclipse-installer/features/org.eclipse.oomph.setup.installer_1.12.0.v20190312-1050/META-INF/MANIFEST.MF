@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Built-By: genie.oomph
+Created-By: Apache Maven 3.5.4
+Build-Jdk: 1.8.0_192
+
+Name: icons/window-bad.ico
+SHA-256-Digest: qgCGsyGTW3Zn7IAFZr6aOXScz2kOJnkOoz8a4B5sqNg=
+
+Name: feature.xml
+SHA-256-Digest: ULDmBhkcd5U58mKBhtYImw5CpjMAW7WtCKlzz7RELes=
+
+Name: epl-v20.html
+SHA-256-Digest: koxKavfpz4JYnlYPmP+7at5zhbWf7Iy07zamu5HPcBg=
+
+Name: feature.properties
+SHA-256-Digest: DG0Q1QcRDc7xUEl9CBXwPbiy/YUX0lThxLOA7dFxrcI=
+
+Name: icons/window.ico
+SHA-256-Digest: An4sGPTHd0gLASUGBIcxhdaENxgTuGvarqZJxCVygtE=
+
+Name: icons/window.xpm
+SHA-256-Digest: kbnPGchgaxXerc6PcVi5tqUUdQwpdDId+QNRtwVWVvs=
+
+Name: license.html
+SHA-256-Digest: Dv5NbrV590iFepPFp4HDAA9w8zkHSynRW5FCE+FLHVM=
+
+Name: icons/window.icns
+SHA-256-Digest: 8fRbNKwCC35wYfNsz6HP4XaiUsGWeZazDNUemviQSGU=
+

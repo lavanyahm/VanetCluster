@@ -1,0 +1,10 @@
+prefix=/usr/local
+libdir=/usr/local/lib
+includedir=/usr/local/include/ns3.29
+
+Name: libns3-wave
+Description: ns-3 module ns3-wave
+Version: 3.29
+Libs: -L${libdir} -Wl,-Bdynamic -lns3.29-wave-debug
+Cflags: -I${includedir}
+Requires: libns3.29-core-debug libns3.29-wifi-debug libns3.29-propagation-debug libns3.29-internet-debug

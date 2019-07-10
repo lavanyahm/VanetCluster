@@ -1,0 +1,10 @@
+prefix=/usr/local
+libdir=/usr/local/lib
+includedir=/usr/local/include/ns3.29
+
+Name: libns3-nix-vector-routing
+Description: ns-3 module ns3-nix-vector-routing
+Version: 3.29
+Libs: -L${libdir} -Wl,-Bdynamic -lns3.29-nix-vector-routing-debug
+Cflags: -I${includedir}
+Requires: libns3.29-internet-debug

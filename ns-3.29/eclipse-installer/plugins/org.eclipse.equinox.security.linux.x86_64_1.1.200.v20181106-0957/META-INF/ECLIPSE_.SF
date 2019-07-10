@@ -1,0 +1,33 @@
+Signature-Version: 1.0
+SHA-256-Digest-Manifest-Main-Attributes: YA1E0pHMJKKGcBrnEbY/8p7Zb2QW/
+ sNvqbSkzF/qRt4=
+SHA-256-Digest-Manifest: P5M/cA9Ob4aBBWz9mOXmrvkJTDAIM6WTtwvzSikDqx4=
+Created-By: 1.8.0_162 (Oracle Corporation)
+
+Name: about.html
+SHA-256-Digest: ncO+WCNUIJ0JLCOl/ot53yopwTqvvtVu0qSgblesdYo=
+
+Name: fragment.properties
+SHA-256-Digest: oSIxoqvMNY92kYhTEMDZzkFuJsu2DLJ05EkQorlqWEA=
+
+Name: org/eclipse/equinox/internal/security/linux/nls/LinuxPasswordPro
+ viderMessages.class
+SHA-256-Digest: 81qIasLyaZs9YgZEe9jEzdgzfmIZMX81zu0lkKA4j/s=
+
+Name: org/eclipse/equinox/internal/security/linux/LinuxPasswordProvide
+ r.class
+SHA-256-Digest: GqaoL3YQFxMY1akBbLg4RA0EMyBV+2luaYmNcliOIIQ=
+
+Name: fragment.xml
+SHA-256-Digest: fgeGYsWZpBpIYrEHnH9ptCS59O825Y6Xf6HQnXCzA8k=
+
+Name: .api_description
+SHA-256-Digest: etH0m2gmb4cySIt0XuskUHkeZDPB3C86s83G/1yGfIQ=
+
+Name: libkeystorelinuxnative.so
+SHA-256-Digest: GiCtW2N7mU0U2wJmBUMnNGEfE7rejqkRtvmmi1HpIBE=
+
+Name: org/eclipse/equinox/internal/security/linux/nls/messages.propert
+ ies
+SHA-256-Digest: C4cCy5f+K2zK89iWdixcMKzXv1JvLTyj1sOE5f5X4QA=
+

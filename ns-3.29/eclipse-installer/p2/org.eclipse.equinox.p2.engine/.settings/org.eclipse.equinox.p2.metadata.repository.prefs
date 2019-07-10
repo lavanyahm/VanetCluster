@@ -1,0 +1,17 @@
+eclipse.preferences.version=1
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target/description=
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target/enabled=true
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target/isSystem=false
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target/name=module-metadata-repository@/jobs/genie.oomph/integration/workspace/git/products/org.eclipse.oomph.setup.installer.product/target
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target/provider=
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target/suffix=p2content.xml
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target/type=org.eclipse.tycho.repository.module.ModuleMetadataRepository
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target/uri=file\:/jobs/genie.oomph/integration/workspace/git/products/org.eclipse.oomph.setup.installer.product/target/
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target/version=1.0.0
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target_targetPlatformRepository/enabled=true
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target_targetPlatformRepository/isSystem=false
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target_targetPlatformRepository/name=TychoTargetPlatform
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target_targetPlatformRepository/suffix=content.xml
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target_targetPlatformRepository/type=org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target_targetPlatformRepository/uri=file\:/jobs/genie.oomph/integration/workspace/git/products/org.eclipse.oomph.setup.installer.product/target/targetPlatformRepository/
+repositories/file\:_jobs_genie.oomph_integration_workspace_git_products_org.eclipse.oomph.setup.installer.product_target_targetPlatformRepository/version=0.0.1
