@@ -9,7 +9,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have reeived a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
@@ -27,7 +27,9 @@
 #include "ns3/wave-net-device.h"
 #include "ns3/wave-mac-helper.h"
 #include "ns3/wave-helper.h"
+#include "ns3/string.h"
 
+using namespace std;
 using namespace ns3;
 /**
  * This simulation is to show the routing service of WaveNetDevice described in IEEE 09.4.
@@ -37,6 +39,19 @@ using namespace ns3;
  * levels. Thus, if users want to control txPowerLevel, they should set
  * these attributes of YansWifiPhy by themselves..
  */
+
+
+
+
+
+
+
+
+
+
+
+
+
 class WaveNetDeviceExample
 {
 public:
@@ -80,10 +95,58 @@ private:
   bool ReceiveVsa (Ptr<const Packet> pkt,const Address & address, uint32_t, uint32_t);
   /// Create WAVE nodes function
   void CreateWaveNodes (void);
+  vector<string> Split(const string& s, const string& match, bool removeEmpty = false, bool fullMatch = false);
+
 
   NodeContainer nodes; ///< the nodes
   NetDeviceContainer devices; ///< the devices
 };
+
+/**
+	 * Split the received message and generate the string vector
+	 * for updating the local knowledge base.
+	 */
+vector<string>  WaveNetDeviceExample:: Split(const string& s, const string& match, bool removeEmpty , bool fullMatch ) {
+
+               typedef string::size_type (string::*find_t)(const string& delim, string::size_type offset) const;
+               vector<string> result; // return container for tokens
+		// starting position for searches
+		string::size_type start = 0, skip = 1; // positions to skip after a match
+		find_t pfind = &string::find_first_of; // search algorithm for matches
+		if (fullMatch) {
+			// use the whole match string as a key
+			// instead of individual characters
+			// skip might be 0. see search loop comments
+			skip = match.length();
+			pfind = &string::find;
+		}
+		while (start != string::npos) {
+			// get a complete range [start..end)
+			string::size_type end = (s.*pfind)(match, start);
+			// null strings always match in string::find, but
+			// a skip of 0 causes infinite loops. pretend that
+			// no tokens were found and extract the whole string
+			if (skip == 0)
+				end = string::npos;
+			string token = s.substr(start, end - start);
+			if (!(removeEmpty && token.empty())) {
+				// extract the token and add it to the result list
+				result.push_back(token);
+			}
+			// start the next range
+			if ((start = end) != string::npos)
+				start += skip;
+		}
+		return result;
+	}
+
+
+
+
+
+
+
+
 void
 WaveNetDeviceExample::CreateWaveNodes (void)
 {
@@ -120,14 +183,25 @@ WaveNetDeviceExample::CreateWaveNodes (void)
 bool
 WaveNetDeviceExample::Receive (Ptr<NetDevice> dev, Ptr<const Packet> pkt, uint16_t mode, const Address &sender)
 {
-  SeqTsHeader seqTs;
+
+  std::cout << "receive a packet: " << pkt->GetSize () << std::endl;
+
+
+  string Packet= pkt->ToString ();
+  std::cout <<"PA:: "<< Packet.size ()<<Packet <<std::endl;
+
+  #if 0
+SeqTsHeader seqTs;
   pkt->PeekHeader (seqTs);
   std::cout << "receive a packet: " << std::endl
             << "  sequence = " << seqTs.GetSeq () << "," << std::endl
             << "  sendTime = " << seqTs.GetTs ().GetSeconds () << "s," << std::endl
             << "  recvTime = " << Now ().GetSeconds () << "s," << std::endl
-            << "  protocol = 0x" << std::hex << mode << std::dec  << std::endl;
+            << "  protocol = 0x" << std::hex << mode << std::dec  << std::endl;                                                                   return true;
+#endif
+
   return true;
+
 }
 
 void
@@ -138,12 +212,76 @@ WaveNetDeviceExample::SendOneWsmpPacket  (uint32_t channel, uint32_t seq)
   const static uint16_t WSMP_PROT_NUMBER = 0x88DC;
   Mac48Address bssWildcard = Mac48Address::GetBroadcast ();
 
+#if 0
   const TxInfo txInfo = TxInfo (channel);
   Ptr<Packet> p  = Create<Packet> (100);
   SeqTsHeader seqTs;
   seqTs.SetSeq (seq);
   p->AddHeader (seqTs);
-  sender->SendX  (p, bssWildcard, WSMP_PROT_NUMBER, txInfo);
+ #endif
+#if 1
+
+ const TxInfo txInfo = TxInfo (channel);
+  string vehicleData = ("");
+  char myData[100];
+  //Data flag
+  sprintf(myData, "%d", 1);
+  vehicleData += myData;
+  vehicleData += "~";
+  //Sequence number
+  int sequence = 2; //seq;
+  sprintf(myData, "%d", sequence);
+  vehicleData += myData;
+  vehicleData += "~";
+  //Transmit time
+  double t = Simulator::Now().GetSeconds();
+  sprintf(myData, "%f", t);
+  vehicleData += myData;
+  vehicleData += "~";
+  //Increase sequence number
+   //stringstream msgx;
+  // msgx << vehicleData;
+  // Ptr<Packet> p = Create<Packet>((uint8_t*) msgx.str().c_str(), packetSize);
+
+   uint16_t packetSize = vehicleData.size ();
+   Ptr<Packet> p = Create<Packet>((uint8_t*) vehicleData.c_str (), packetSize);
+   std::cout << "Before sending : " << p->GetSize () << std::endl;
+
+     uint8_t *buffer = new uint8_t[p->GetSize ()];
+     p->CopyData (buffer, p->GetSize ());
+     std::string receivedData(buffer, buffer+p->GetSize ());
+     vector<string> parsedData = Split(receivedData,"~");
+
+    vector<string>::const_iterator constIterator;
+    constIterator = parsedData.begin();
+    //Data or Hello packet flag
+    int packetTypeFlag = atoi((*constIterator).c_str());
+    ++constIterator;//++constIterator;
+    //Sequence number
+     int sq = atoi((*constIterator).c_str());
+
+    std::cout<<"packeTypeFlag : "<<packetTypeFlag<<std::endl;
+    std::cout<<"sequence : "<<sq <<std::endl;
+
+#if 0
+
+     std::vector<std::string>::const_iterator constIterator;
+            constIterator = receivedMessage.begin();
+            ++constIterator;++constIterator;++constIterator,++constIterator;
+            //Transmit time
+            double transmitTime = atof((*constIterator).c_str())
+
+
+
+   #endif
+
+
+
+
+   std::cout<<"Sending:.."<<endl;
+   sender->SendX  (p, bssWildcard, WSMP_PROT_NUMBER, txInfo);
+#endif
+
 }
 
 void
@@ -164,18 +302,22 @@ WaveNetDeviceExample::SendWsmpExample ()
   // the first packet will be queued currently and be transmitted in next SCH interval
   Simulator::Schedule (Seconds (1.0), &WaveNetDeviceExample::SendOneWsmpPacket,  this, SCH1, 1);
   // the second packet will be queued currently and then be transmitted , because of in the CCH interval.
+#if 1
+
   Simulator::Schedule (Seconds (1.0), &WaveNetDeviceExample::SendOneWsmpPacket,  this, CCH, 2);
   // the third packet will be dropped because of no channel access for SCH2.
   Simulator::Schedule (Seconds (1.0), &WaveNetDeviceExample::SendOneWsmpPacket,  this, SCH2, 3);
 
+#endif
   // release SCH access
   Simulator::Schedule (Seconds (2.0), &WaveNetDevice::StopSch, sender, SCH1);
   Simulator::Schedule (Seconds (2.0), &WaveNetDevice::StopSch, receiver, SCH1);
   // the fourth packet will be queued and be transmitted because of default CCH access assigned automatically.
+#if 0
   Simulator::Schedule (Seconds (3.0), &WaveNetDeviceExample::SendOneWsmpPacket,  this, CCH, 4);
   // the fifth packet will be dropped because of no SCH1 access assigned
   Simulator::Schedule (Seconds (3.0), &WaveNetDeviceExample::SendOneWsmpPacket,  this, SCH1, 5);
-
+#endif
   Simulator::Stop (Seconds (5.0));
   Simulator::Run ();
   Simulator::Destroy ();
@@ -194,7 +336,11 @@ WaveNetDeviceExample::SendIpPacket (uint32_t seq, bool ipv6)
   Ptr<Packet> p  = Create<Packet> (100);
   SeqTsHeader seqTs;
   seqTs.SetSeq (seq);
-  p->AddHeader (seqTs);
+  //uint32_t etx = 34;
+ // seqTs.SetETX (etx);
+
+  p->AddHeader (seqTs
+                );
   sender->Send (p, dest, protocol);
 }
 
@@ -284,9 +430,9 @@ main (int argc, char *argv[])
   WaveNetDeviceExample example;
   std::cout << "run WAVE WSMP routing service case:" << std::endl;
   example.SendWsmpExample ();
-  std::cout << "run WAVE IP routing service case:" << std::endl;
-  //example.SendIpExample ();
-  std::cout << "run WAVE WSA routing service case:" << std::endl;
+  //std::cout << "run WAVE IP routing service case:" << std::endl;
+   //example.SendIpExample ();
+ // std::cout << "run WAVE WSA routing service case:" << std::endl;
   //example.SendWsaExample ();
   return 0;
 }
