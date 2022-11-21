@@ -288,6 +288,16 @@ private:
   std::vector<Ptr<Application> > m_applications; //!< Applications associated to this node
   ProtocolHandlerList m_handlers; //!< Protocol handlers in the node
   DeviceAdditionListenerList m_deviceAdditionListeners; //!< Device addition listeners in the node
+public:
+        double          coverage;
+        int             proposed;
+        double		speed;
+        double		L;
+        double		priority;
+        int             nodeState;
+        int             memCount;
+
+
 };
 
 } // namespace ns3
