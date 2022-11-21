@@ -1,0 +1,293 @@
+
+//void	vanetRouting::SchedulePacketWithoutContext(Ptr<Packet> packet, void* target)
+void    vanetRouting::SchedulePacketWithoutContext(Ptr<Packet> packet)
+{
+	double	coverage = node_->coverage;
+	double	delay = PROP_DELAY + MIN_DELAY;
+
+	if(packet->nextHop == -1)
+	{
+		if(packet->Broadcast == 1)
+		{
+			double	x1 = get_x();
+			double	y1 = get_y();
+
+			vanetRouting * tnode = vanethead_.lh_first;
+			for (; tnode; tnode = tnode->nextvanet())
+			{
+				if(index != tnode->index)
+				{
+					double	x2 = get_x(tnode->index);
+					double	y2 = get_y(tnode->index);
+
+					double	dist = distance(x1,y1,x2,y2);
+					double	pdelay = dist / coverage * 0.1;
+
+					Ptr<Packet> p = packet->Copy();
+					copy(p,packet);
+					p->RSSI = (pdelay * delay) * Txp;
+					p->RSSI += RSS_BOUND(p->RSSI);
+					SchedulePacket(tnode,p,pdelay + delay + (pdelay * delay));
+				}
+			}
+		}
+		else if(packet->nbBroadcast == 1)
+		{
+			double	x1 = get_x();
+			double	y1 = get_y();
+
+			vanetRouting * tnode = vanethead_.lh_first;
+			for (; tnode; tnode = tnode->nextvanet())
+			{
+				double	x2 = get_x(tnode->index);
+				double	y2 = get_y(tnode->index);
+
+				double	dist = distance(x1,y1,x2,y2);
+				double	pdelay = dist / coverage * 0.1;
+
+				if(index != tnode->index && dist < coverage)
+				{
+					Ptr<Packet> p = packet->Copy();
+					copy(p,packet);
+					p->RSSI = (pdelay * delay) * Txp;
+					p->RSSI += RSS_BOUND(p->RSSI);
+					SchedulePacket(tnode,p,pdelay + delay + (pdelay * delay));
+				}
+			}
+		}
+		else
+		{
+			double	x1 = get_x();
+			double	y1 = get_y();
+
+			vanetRouting * tnode = vanethead_.lh_first;
+			for (; tnode; tnode = tnode->nextvanet())
+			{
+				double	x2 = get_x(tnode->index);
+				double	y2 = get_y(tnode->index);
+
+				double	dist = distance(x1,y1,x2,y2);
+				double	pdelay = dist / coverage * 0.1;
+
+				if(index != tnode->index && dist < coverage)
+				{
+					Ptr<Packet> p = packet->Copy();
+					copy(p,packet);
+					p->RSSI = (pdelay * delay) * Txp;
+					p->RSSI += RSS_BOUND(p->RSSI);
+					SchedulePacket(tnode,p,pdelay + delay + (pdelay * delay));
+				}
+			}
+		}
+	}
+	else
+	{
+		if(packet->vanetPacket == DATA_PACKET)
+		{
+			if(TYPENAME_  == 1)
+			{
+				nsaddr_t nxt = packet->nextHop;
+				if(packet->Broadcast == 1)
+				{
+					double	x1 = get_x();
+					double	y1 = get_y();
+		
+					vanetRouting * tnode = get_vanet_by_address(nxt);
+					if(tnode)
+					{
+						double	x2 = get_x(tnode->index);
+						double	y2 = get_y(tnode->index);
+		
+						double	dist = distance(x1,y1,x2,y2);
+						double	pdelay = dist / coverage * 0.1;
+		
+						Ptr<Packet> p = packet->Copy();
+						copy(p,packet);
+						p->RSSI = (pdelay * delay) * Txp;
+						p->RSSI += RSS_BOUND(p->RSSI);
+						if(Random(0,1) < 0.99)
+						{
+							double	interval = pdelay + delay + (pdelay * delay);
+							trace(p,index,nxt,CURRENT_TIME + interval);
+							SchedulePacket(tnode,p,interval);
+						}
+					}
+				}
+				else
+				{
+					double	x1 = get_x();
+					double	y1 = get_y();
+		
+					vanetRouting * tnode = get_vanet_by_address(nxt);
+		
+					double	x2 = get_x(tnode->index);
+					double	y2 = get_y(tnode->index);
+	
+					double	dist = distance(x1,y1,x2,y2);
+					double	pdelay = dist / coverage * 0.1;
+		
+					if(index != tnode->index && dist < coverage)
+					{
+						Ptr<Packet> p = packet->Copy();
+						copy(p,packet);
+						p->RSSI = (pdelay * delay) * Txp;
+						p->RSSI += RSS_BOUND(p->RSSI);
+						if(Random(0,1) < 0.99)
+						{
+							double	interval = pdelay + delay + (pdelay * delay);
+							trace(p,index,nxt,CURRENT_TIME + interval);
+							SchedulePacket(tnode,p,interval);
+						}
+					}
+				}
+			}
+			else
+			{
+				nsaddr_t nxt = packet->nextHop;
+				if(packet->Broadcast == 1)
+				{
+					double	x1 = get_x();
+					double	y1 = get_y();
+		
+					vanetRouting * tnode = get_vanet_by_address(nxt);
+					if(tnode)
+					{
+						double	x2 = get_x(tnode->index);
+						double	y2 = get_y(tnode->index);
+		
+						double	dist = distance(x1,y1,x2,y2);
+						double	pdelay = dist / coverage * 0.1;
+		
+						Ptr<Packet> p = packet->Copy();
+						copy(p,packet);
+						p->RSSI = (pdelay * delay) * Txp;
+						p->RSSI += RSS_BOUND(p->RSSI);
+						if(Random(0,1) < 0.96)
+						{
+							double	interval = BOUND(0.01) + pdelay + delay + (pdelay * delay);
+							trace(p,index,nxt,CURRENT_TIME + interval);
+							SchedulePacket(tnode,p,interval);
+						}
+					}
+				}
+				else
+				{
+					double	x1 = get_x();
+					double	y1 = get_y();
+		
+					vanetRouting * tnode = get_vanet_by_address(nxt);
+		
+					double	x2 = get_x(tnode->index);
+					double	y2 = get_y(tnode->index);
+	
+					double	dist = distance(x1,y1,x2,y2);
+					double	pdelay = dist / coverage * 0.1;
+		
+					if(index != tnode->index && dist < coverage)
+					{
+						Ptr<Packet> p = packet->Copy();
+						copy(p,packet);
+						p->RSSI = (pdelay * delay) * Txp;
+						p->RSSI += RSS_BOUND(p->RSSI);
+						if(Random(0,1) < 0.96)
+						{
+							double	interval = BOUND(0.01) + pdelay + delay + (pdelay * delay);
+							trace(p,index,nxt,CURRENT_TIME + interval);
+							SchedulePacket(tnode,p,interval);
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			nsaddr_t nxt = packet->nextHop;
+			if(packet->Broadcast == 1)
+			{
+				double	x1 = get_x();
+				double	y1 = get_y();
+	
+				vanetRouting * tnode = get_vanet_by_address(nxt);
+				if(tnode)
+				{
+					double	x2 = get_x(tnode->index);
+					double	y2 = get_y(tnode->index);
+	
+					double	dist = distance(x1,y1,x2,y2);
+					double	pdelay = dist / coverage * 0.1;
+	
+					Ptr<Packet> p = packet->Copy();
+					copy(p,packet);
+					p->RSSI = (pdelay * delay) * Txp;
+					p->RSSI += RSS_BOUND(p->RSSI);
+					SchedulePacket(tnode,p,pdelay + delay + (pdelay * delay));
+				}
+			}
+			else
+			{
+				double	x1 = get_x();
+				double	y1 = get_y();
+	
+				vanetRouting * tnode = get_vanet_by_address(nxt);
+	
+				double	x2 = get_x(tnode->index);
+				double	y2 = get_y(tnode->index);
+
+				double	dist = distance(x1,y1,x2,y2);
+				double	pdelay = dist / coverage * 0.1;
+	
+				if(index != tnode->index && dist < coverage)
+				{
+					Ptr<Packet> p = packet->Copy();
+					copy(p,packet);
+					p->RSSI = (pdelay * delay) * Txp;
+					p->RSSI += RSS_BOUND(p->RSSI);
+					SchedulePacket(tnode,p,pdelay + delay + (pdelay * delay));
+				}
+			}
+		}
+	}
+}
+
+vanetRouting* vanetRouting::get_vanet_by_address (nsaddr_t id)
+{
+	vanetRouting * tnode = vanethead_.lh_first;
+	for (; tnode; tnode = tnode->nextvanet()) {
+		if (tnode->index == id ) {
+			return (tnode);
+		}
+	}
+	return NULL;
+}
+
+void	vanetRouting::copy(Ptr<Packet> p,Ptr<Packet> packet)
+{
+	p->vanetPacket	=	packet->vanetPacket;
+	p->vanetType	=	packet->vanetType;
+
+	p->X		=	packet->X;
+	p->Y		=	packet->X;
+
+	p->SenderID	=	packet->SenderID;
+	p->ReceiverID	=	packet->ReceiverID;
+
+	p->previousHop	=	packet->previousHop;
+
+	p->TxPort	=	packet->TxPort;
+	p->RxPort	=	packet->RxPort;
+
+	p->nbBroadcast	=	packet->nbBroadcast;
+	p->Broadcast	=	packet->Broadcast;
+	p->nextHop	=	packet->nextHop;
+	p->speed	=	packet->speed;
+	p->priority	=	packet->priority;
+	p->uid		=	packet->uid;
+	p->pSize	=	packet->pSize;
+	p->num_forwards	=	packet->num_forwards;
+	p->txInitTime	=	packet->txInitTime;
+}
+/*
+void	vanetRouting::trace(Ptr<Packet> p,nsaddr_t src,nsaddr_t dst,double txc)
+{
+	anim->trace(src,dst,CURRENT_TIME,txc);
+}*/
